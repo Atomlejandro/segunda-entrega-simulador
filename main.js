@@ -6,64 +6,35 @@ const precioUnitario = 50;
 switch (operacion) {
     case "1": {
         let cantidadComprada = Number(prompt("Ingresa la cantidad comprada:"));
-        let preciosinDescuento = cantidadComprada * precioUnitario;
-        let descuentoPorcentaje = 0;
-        let preciofinal;
+     let preciosinDescuento = cantidadComprada * precioUnitario;
+      let precioFinal =  calculadoraPrecios(cantidadComprada,preciosinDescuento);
+      alert("El precio final es: " + precioFinal);
 
-        if (cantidadComprada >= 100) {
-            descuentoPorcentaje = 0.20;
-            preciofinal = preciosinDescuento - (cantidadComprada * precioUnitario * descuentoPorcentaje);
-            console.log("El precio final con el descuento es: ", preciofinal);
-        } else if (cantidadComprada >= 50) {
-            descuentoPorcentaje = 0.15;
-            preciofinal = preciosinDescuento - (cantidadComprada * precioUnitario * descuentoPorcentaje);
-            console.log("El precio final con el descuento es: ", preciofinal);
-        } else if (cantidadComprada >= 20) {
-            descuentoPorcentaje = 0.10;
-            preciofinal = preciosinDescuento - (cantidadComprada * precioUnitario * descuentoPorcentaje);
-            console.log("El precio final con el descuento es: ", preciofinal);
-        } else {
-            preciofinal = preciosinDescuento;
-            console.log("El precio final sin descuento es: ", preciofinal);
-        }
-        break;
+      break;
     }
 
     case "2": {
-        let totalAcumulado = 0;
+        let totalAcumulado=0;
         let respuesta;
-
-        do {
-            let producto = prompt("Ingresa el nombre del producto a agregar:");
-            let cantidadIngresada = Number(prompt("Ingresa la cantidad que vas a comprar de " + producto + ":"));
-
-        
-            if (cantidadIngresada > 0) {
-                totalAcumulado += cantidadIngresada;
-                console.log("Se agregaron " + cantidadIngresada + " unidades de " + producto + ". Total acumulado: " + totalAcumulado);
-            } else {
-                console.log("Cantidad inválida, no se agregó al total.");
-            }
-
-            respuesta = prompt("¿Deseas agregar otro producto? (si/no):");
-            respuesta = respuesta.toLowerCase();
-        } while (respuesta === "si");
-
-        let totalAPagar = totalAcumulado * precioUnitario;
-        console.log("Compra finalizada. Unidades totales: " + totalAcumulado + ". Total a pagar: " + totalAPagar);
+        let producto; 
+        let cantidadIngresada;  
+     let resumenCompras = registroCompras(totalAcumulado,respuesta,producto,cantidadIngresada, precioUnitario);
+     console.log(resumenCompras);
         break;
     }
    case "3":{
+
+    const validarAcceso = (codigoIngresado, codigoCorrecto) =>codigoIngresado === codigoCorrecto;
     const tarjetaAcceso = 1234;
     let ingresoAcceso;
    
     
     do{
     ingresoAcceso = Number(prompt("Ingresa el codigo de acceso para realizar la compra:"));
-if (ingresoAcceso === tarjetaAcceso){
-    console.log ("Codigo correcto!, gracias por realizar tu compra.");
-}else console.log("Contraseña incorrecta, intentalo nuevamente.");
-    } while(ingresoAcceso !== tarjetaAcceso);
+if (validarAcceso(ingresoAcceso,tarjetaAcceso)){
+    alert("Código correcto! Gracias por realizar tu compra."); 
+}else alert("Contraseña incorrecta, intentalo nuevamente.");
+    } while(!validarAcceso(ingresoAcceso, tarjetaAcceso));
 
 break;
 }
@@ -71,4 +42,42 @@ break;
     default:
         console.log("Opción no válida");
         break;
+}
+
+function calculadoraPrecios(cantidadComprada, preciosinDescuento, precioUnitario) {
+
+    if (cantidadComprada >= 100) {
+            descuentoPorcentaje = 0.20;
+        } else if (cantidadComprada >= 50) {
+            descuentoPorcentaje = 0.15;
+        } else if (cantidadComprada >= 20) {
+            descuentoPorcentaje = 0.10;
+        } else {
+            descuentoPorcentaje = 0;
+        }
+      
+        precioFinal = preciosinDescuento - (cantidadComprada * precioUnitario * descuentoPorcentaje);
+        return precioFinal;
+    
+}
+
+function registroCompras(totalAcumulado, respuesta, producto, cantidadIngresada, precioUnitario){
+  do {
+           producto = prompt("Ingresa el nombre del producto a agregar:");
+           cantidadIngresada =  Number(prompt("Ingresa la cantidad que vas a comprar de " + producto + ":"));
+            
+        
+            if (cantidadIngresada > 0) {
+                totalAcumulado += cantidadIngresada;
+                console.log("Se agregaron " + cantidadIngresada + " unidades de " + producto + ". Total acumulado: " + totalAcumulado);
+            } else {
+               console.log("Cantidad inválida, no se agregó al total.");
+            }
+
+            respuesta = prompt("¿Deseas agregar otro producto? (si/no):");
+            respuesta = respuesta.toLowerCase();
+        } while (respuesta === "si");
+
+        let totalAPagar = totalAcumulado * precioUnitario;
+        return("Compra finalizada. Unidades totales: " + totalAcumulado + ". Total a pagar: " + totalAPagar);
 }
